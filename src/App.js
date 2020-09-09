@@ -106,7 +106,17 @@ const FOOD_AREAS = [{
 	}],
 }];
 
-const placesMap = FOOD_AREAS.reduce((result, area) => {
+const UNIQ_FOOD_AREAS = FOOD_AREAS.map(foodArea => {
+	return { ...foodArea, items: foodArea.items.map(item => {
+		const newItem = { ...item };
+		newItem.foods = newItem.foods.map(food => {
+			return { ...food, id: `${newItem.id}_${food.id}` };
+		});
+		return newItem;
+	}) };
+});
+
+const placesMap = UNIQ_FOOD_AREAS.reduce((result, area) => {
 	area.items.forEach(item => {
 		result[item.link] = item;
 	});
@@ -114,7 +124,7 @@ const placesMap = FOOD_AREAS.reduce((result, area) => {
 	return result;
 }, {});
 
-const foodsMap = FOOD_AREAS.reduce((result, area) => {
+const foodsMap = UNIQ_FOOD_AREAS.reduce((result, area) => {
 	area.items.forEach(item => {
 		item.foods.forEach(food => {
 			result[food.id] = food;
@@ -132,11 +142,11 @@ const App = () => {
 		<Router>
 			<Switch>
 				<Route path="/" exact>
-					<Home foodAreas={FOOD_AREAS} order={order} />
+					<Home foodAreas={UNIQ_FOOD_AREAS} order={order} />
 				</Route>
 				<Route path="/order/:areaId/:itemId" exact>
 					<Order
-						foodAreas={FOOD_AREAS}
+						foodAreas={UNIQ_FOOD_AREAS}
 						order={order}
 						setActiveOrder={({ itemId }) => {
 							const nextStatuses = {...orderStatuses};
@@ -150,7 +160,7 @@ const App = () => {
 				</Route>
 				<Route path="/basket/:areaId/:itemId" exact>
 					<Basket
-						foodAreas={FOOD_AREAS}
+						foodAreas={UNIQ_FOOD_AREAS}
 						order={order}
 					/>
 				</Route>
@@ -161,7 +171,7 @@ const App = () => {
 					<Orders 
 						order={order}
 						orderStatuses={orderStatuses}
-						foodAreas={FOOD_AREAS}
+						foodAreas={UNIQ_FOOD_AREAS}
 						setFinishedOrder={({ itemId }) => {
 							const nextStatuses = {...orderStatuses};
 
@@ -187,7 +197,7 @@ const App = () => {
 							<Place
 								{...routeProps}
 								item={placesMap[routeProps.location.pathname]}
-								area={FOOD_AREAS[0]}
+								area={UNIQ_FOOD_AREAS[0]}
 								order={order}
 								onIncrementPosition={({ id, itemId, areaId }) => {
 									const updatedOrder = {...order};
@@ -204,7 +214,7 @@ const App = () => {
 									let nextOrderStatuses = {...orderStatuses};
 
 									if (Object.keys(nextOrderStatuses).length === 0) {
-										FOOD_AREAS.forEach(area => {
+										UNIQ_FOOD_AREAS.forEach(area => {
 											area.items.forEach(item => {
 												item.foods.forEach(food => {
 													if (food.id in order) {
@@ -239,7 +249,7 @@ const App = () => {
 									let nextOrderStatuses = {...orderStatuses};
 
 									if (Object.keys(nextOrderStatuses).length === 0) {
-										FOOD_AREAS.forEach(area => {
+										UNIQ_FOOD_AREAS.forEach(area => {
 											area.items.forEach(item => {
 												item.foods.forEach(food => {
 													if (food.id in order) {

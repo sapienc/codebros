@@ -119,9 +119,10 @@ const Basket = ({ match: { params: { areaId, itemId }}, foodAreas, order }) => {
             }}
           />
         </div>
-        <div className="Place__choice-item">
+        <div className="Place__choice-item" style={{ display: faster ? 'none' : 'block' }}>
           <span>Назначить</span>
           <input
+            type="time"
             value={time}
             onFocus={() => {
               setFaster(false);

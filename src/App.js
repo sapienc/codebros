@@ -7,7 +7,7 @@ import Basket from './panels/Basket';
 import Order from './panels/Order';
 import Orders from './panels/Orders';
 
-import './panels/App.css';
+import './App.css';
 import kfc from './img/kfc.png';
 import burger from './img/burger.png';
 import mcdac from './img/mcdac.png';

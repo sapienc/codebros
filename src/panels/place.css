@@ -165,6 +165,11 @@
   color: #fff;
 }
 
+.Place__order_disabled {
+  background-color: #a1a1a1;
+  cursor: not-allowed;
+}
+
 .Place__products-wrapper {
   position: relative;
 }

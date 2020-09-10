@@ -138,6 +138,12 @@ const App = () => {
 	const [ orderStatuses, setOrderStatuses ] = useState(JSON.parse((localStorage.getItem('orderStatuses') || 'null')) || {});
 	const [ order, setOrder ] = useState(JSON.parse((localStorage.getItem('orders') || 'null')) || {});
 
+	const [ orderParams, setOrderParams ] = useState(JSON.parse((localStorage.getItem('orderParams') || 'null')) || {
+		time: '',
+		faster: true,
+		self: false
+	});
+
 	return (
 		<Router>
 			<Switch>
@@ -162,6 +168,11 @@ const App = () => {
 					<Basket
 						foodAreas={UNIQ_FOOD_AREAS}
 						order={order}
+						orderParams={orderParams}
+						onOrderParamsChange={newOrderParams => {
+							setOrderParams(newOrderParams);
+							localStorage.setItem('orderParams', JSON.stringify(newOrderParams));
+						}}
 					/>
 				</Route>
 				<Route

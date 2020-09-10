@@ -8,10 +8,7 @@ import edit from '../img/edit.svg';
 import './place.css';
 
 
-const Basket = ({ match: { params: { areaId, itemId }}, foodAreas, order }) => {
-  const [ faster, setFaster ] = useState(true);
-  const [ time, setTime ] = useState('');
-  const [ selfService, setSelfService ] = useState(false);
+const Basket = ({ match: { params: { areaId, itemId }}, foodAreas, order, orderParams, onOrderParamsChange }) => {
   const area = foodAreas.filter(area => area.id === areaId)[0];
   const item = area.items.filter(item => item.id === itemId)[0];
 
@@ -108,43 +105,44 @@ const Basket = ({ match: { params: { areaId, itemId }}, foodAreas, order }) => {
         <div className="Place__choice-item">
           <span>Как можно быстрее</span>
           <Checkbox 
-            checked={faster} 
+            checked={orderParams.faster} 
             onToggle={() => {
-              if (faster) {
-                setFaster(false);
+              const newOrderParams = { ...orderParams };
+              if (orderParams.faster) {
+                newOrderParams.faster = false;
               } else {
-                setTime('');
-                setFaster(true);
+                newOrderParams.time = '';
+                newOrderParams.faster = true;
               }
+              onOrderParamsChange(newOrderParams);
             }}
           />
         </div>
-        <div className="Place__choice-item" style={{ display: faster ? 'none' : 'block' }}>
+        <div className="Place__choice-item" style={{ display: orderParams.faster ? 'none' : 'block' }}>
           <span>Назначить</span>
           <input
             type="time"
-            value={time}
+            value={orderParams.time}
             onFocus={() => {
-              setFaster(false);
+              onOrderParamsChange({ ...orderParams, faster: false });
             }}
             onChange={event => {
-              setFaster(false);
-              setTime(event.target.value);
+              onOrderParamsChange({ ...orderParams, faster: false, time: event.target.value });
             }}
             onBlur={() => {
-              if (time) {
-                setFaster(false);
+              if (orderParams.time) {
+                onOrderParamsChange({ ...orderParams, faster: false });
               }
             }}
           />
         </div>
         <div className="Place__choice-item">
           <h3>С собой</h3>
-          <Checkbox checked={selfService} onToggle={() => setSelfService(!selfService)} />
+          <Checkbox checked={orderParams.self} onToggle={() => onOrderParamsChange({ ...orderParams, self: true })} />
         </div>
         <div className="Place__choice-item">
           <h3>На месте</h3>
-          <Checkbox checked={!selfService} onToggle={() => setSelfService(!setSelfService)} />
+          <Checkbox checked={!orderParams.self} onToggle={() => onOrderParamsChange({ ...orderParams, self: false })} />
         </div>
       </div>
       <footer className="Place__footer">

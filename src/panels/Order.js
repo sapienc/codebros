@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
-import edit from '../img/edit.svg';
 import './place.css';
 
 
@@ -18,12 +17,6 @@ const Order = ({ match: { params: { areaId, itemId }}, history, foodAreas, setAc
               {area.name}
             </Link>
           </h1>
-          <Link to="/edit" className="Place__change-tz">
-            <img
-              alt="change-profile"
-              src={edit}
-            />
-          </Link>
         </aside>
       </header>
       <aside className="Place__restoraunt">

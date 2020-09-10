@@ -4,7 +4,6 @@ import accounting from 'accounting';
 
 import Checkbox from './Checkbox';
 
-import edit from '../img/edit.svg';
 import './place.css';
 
 
@@ -40,12 +39,6 @@ const Basket = ({ match: { params: { areaId, itemId }}, foodAreas, order, orderP
               {area.name}
             </Link>
           </h1>
-          <Link to="/edit" className="Place__change-tz">
-            <img
-              alt="change-profile"
-              src={edit}
-            />
-          </Link>
         </aside>
       </header>
       <aside className="Place__restoraunt">
